@@ -1,3 +1,11 @@
+# HeartWar
+아시아경제 교육센터 헬스케어 4기 파이게임 프로젝트 결과물입니다.
+
+팀장: 박수연(MDA04systack)
+팀원: 김용기, 유성빈, 박윤정
+
+---
+
 # Arkanoid
 
 [![Build Status](https://travis-ci.org/wkeeling/arkanoid.svg?branch=master)](https://travis-ci.org/wkeeling/arkanoid)
