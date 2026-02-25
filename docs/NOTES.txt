@@ -1,0 +1,101 @@
+Setup
+=====
+
+Project
+--------
+
+- Install virtualenvwrapper by following the instructions
+    https://virtualenvwrapper.readthedocs.io/en/latest/
+- Ensure you export the PROJECT_HOME environment variable to point at your workspace project folder
+
+- Create virtualenv 'arkanoid' using virtualenvwrapper:
+    mkproject -p /usr/bin/python3 -f arkanoid
+
+pygame
+------
+Install pygame in the virtual environment.
+(see http://askubuntu.com/questions/299950/how-do-i-install-pygame-in-virtualenv,
+http://stackoverflow.com/questions/17869101/unable-to-install-pygame-using-pip)
+
+- Install system-wide build dependencies (Ubuntu 14.04):
+    sudo apt-get build-dep python-pygame
+    sudo apt-get install libfreetype6-dev
+
+- Install system-wide build depedencies (Mac OSX):
+    brew install sdl sdl_image sdl_mixer sdl_ttf smpeg portmidi 
+    
+- Install Mercurial (Mac OSX)
+    brew install mercurial
+    
+- Install system-wide build depedencies (Mac OSX):
+    brew install sdl sdl_image sdl_mixer sdl_ttf smpeg portmidi
+
+- Install Mercurial (Mac OSX)
+    brew install mercurial
+
+NOTE: OSX El Capitan cannot run pygame inside a virtualenv. So need to do
+the following as sudo after brew installing python3 system-wide.
+
+- May need to do: sudo apt-get install python3-devel
+
+- Clone the project out of GitHub and then run:
+    pip install -r requirements.txt
+
+
+The ball
+--------
+
+- I used the pygame tutorial http://www.pygame.org/docs/tut/tom/MakeGames.html to understand how
+a ball can be made to bounce around the screen. The behaviour in the tutorial is slightly different
+(2 bats either side, rather than at bottom).
+
+- I found I had to add some extra logic to handle the ball hitting the corner of the screen. In this
+scenario using the tutorial's logic, the ball would disappear through a hole in the corner. The logic
+I added was to detect when the ball was in the corner, and bounce it back in exactly the opposite
+direction.
+
+- Decided to refactor the Ball class and introduce the concept of a "collidable object". This
+allows the Ball to not have to depend upon all the sorts of objects it needs to hit - such
+as the paddle, blocks, sides, etc. Didn't want to go the route of the tutorial and use globals.
+Callbacks better option, although bit more complex.
+
+- trying desperately hard not to let the ball become a god object, with all logic encoded into it.
+I want the objects the ball collides with to determine how the ball should bounce off them and at
+what speed. I don't want the ball to have all this knowledge.
+
+Restructring
+------------
+
+- The game has a fairly clean object model - the paddle, the ball, the bricks, the walls,
+the powerups. Fully understanding how these objects interact and coming up with a flexible
+object model that can accommodate it quite a challenge.
+
+- Objects themselves and key functionality.
+
+- Dealing with global objects such as the screen, clock, fonts etc. that need to be available
+to all modules. Don't want to create circular module dependencies.
+
+- Areas of difficulty - e.g. things that don't fit too cleanly into the model. For example,
+the start sequence of the game, or when the game restarts after losing a life. Here, a series
+of steps happen - which are still technically inside the game - but are outside of normal
+gameplay.
+
+Making the gameplay level-specific
+
+- Tuning the gameplay so that everything works well for one level, won't necessarily satisfy all levels.
+- For example, the default speed for the ball and ball bounce for levels 1 and 2 didn't work so well
+ in level 3 due to the proximity of the bricks to the paddle, and to themselves. It meant that the ball
+ got out of control very quickly. Also, patterns emerge in new levels which weren't present in previous
+ ones. For example, the use of gold bricks in level 3 which are indestructable highlighted ball bounce
+ irregularities for corner boucing.
+
+
+Credits
+-------
+
+- Taito corporation
+- The spriter's resource (url)
+- Main logo ?
+- Enemy explosion graphics
+- Font - generation.ttf
+- pygame tutorials and reference docs
